@@ -1,0 +1,59 @@
+' W-4 Standard Nowcasting
+' ==================================
+' Section II. Nowcasting Preparation 
+' Create CRISIS Dummy
+ 
+smpl @all 
+genr CRISIS = 0 
+
+smpl 2009Q1 2009Q1
+CRISIS = 1 
+
+smpl 2016Q4 2016Q4
+CRISIS = 1 
+
+smpl 2020Q2 2020Q2
+CRISIS = 1
+
+smpl 2021Q2 2021Q2
+CRISIS = 1
+
+smpl @all 
+
+' Baseline Model
+DLOG(RGDP) DLOG(RGDP(-3)) DLOG(RGDP(-2)) DLOG(RGDP(-1)) DLOG(CONSU_MOTOR) D(PMI_NEW) DLOG(RGDP_US(-1)) DLOG(RGDP_CN(-1)) CRISIS C
+
+2000q2 2022q4
+
+' Section II. Bridge
+'------------------------
+' Seasonal Adjustment for CONSU_MOTOR 
+consu_motor.x13(save="d11", tf=auto, outtype="tc", outspan="2020.1 , 2021.4")  @x11arima(amdl=b) @reg(regs="const") @x11()
+
+' eq01_f_base: baseline model OLS
+
+DLOG(RGDP) DLOG(RGDP(-3)) DLOG(RGDP(-2)) DLOG(RGDP(-1)) DLOG(CONSU_MOTOR) D(PMI_NEW) DLOG(RGDP_US(-1)) DLOG(RGDP_CN(-1)) CRISIS C
+
+2000q2 2023q1
+
+' In-Sample Forecast sample 
+2018Q1 2023Q1
+
+' Nowcast Sample 
+2023Q2 2023Q2
+
+' Section III. MIDAS
+'------------------------
+' eq02_f_midas & eq03_f_umidas
+dlog(rgdp) dlog(rgdp(-3)) dlog(rgdp(-2)) dlog(rgdp(-1)) dlog(rgdp_us(-1)) dlog(rgdp_cn(-1)) crisis c 
+
+monthly\dlog(consu_motor) 
+monthly\d(pmi_new)
+
+2000q2 2023q1
+
+' generate forecast pooling 
+
+smpl 2018Q1 2022Q3
+
+rgdp.forceval(mean) bridge\rgdp_f_bridge Midas\rgdp_f_midas Midas\rgdp_f_umidas 
