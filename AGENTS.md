@@ -13,7 +13,7 @@ This project aims to replicate an Eviews workshop in a Google Colab notebook. Th
 - `NWC_W1_notebook.ipynb`: Colab Python notebook that reproduces the data management and econometric estimation procedures from the Eviews Programs. It also includes the background information from the pdf file.
 
 ## Notebook Workflow
-- The first and last cells manage the link between GitHub and the local clone of the repository on my Google Drive. These do not have a role in the Nowcasting workshop. Do NOT touch them.
+- The first and last cells manage the link between GitHub and the local clone of the repository on my Google Drive. These do not have a role in the Nowcasting workshop. Do NOT edit them. Do NOT run them when testing the code. Treat them is non-existent for your purposes.
 - The notebook downloads a zip file from my Google Drive that includes `India.xlsx' (data file) and `x13as_ascii` (X13 seasonal adjustment routine for Linux). This ensures that the notebook can be run without any additional files.
 - After data loading and transformations the notebook estimates nowcasting models (Bridge, Midas, U-Midas), and evaluates them out-of-sample
 
